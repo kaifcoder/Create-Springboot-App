@@ -24,7 +24,7 @@ export function generateProject(config: ProjectConfig) {
   // Create model files
   const modelFiles: any = {}
   entities.forEach((entity) => {
-    modelFiles[`${entity.name}.java`] = generateEntityClass(entity)
+    modelFiles[`${entity.name}.java`] = generateEntityClass(entity, projectName, domain)
   })
 
   // Create repository files
@@ -100,11 +100,11 @@ export function generateProject(config: ProjectConfig) {
   return project
 }
 
-function generateModelFiles(entities: Entity[]) {
+function generateModelFiles(entities: Entity[], projectName: string, domain: string) {
   const files: Record<string, string> = {}
 
   entities.forEach((entity) => {
-    files[`${entity.name}.java`] = generateEntityClass(entity)
+    files[`${entity.name}.java`] = generateEntityClass(entity, projectName, domain)
   })
 
   return files
@@ -150,8 +150,8 @@ function generateControllerFiles(entities: Entity[], projectName: string, domain
   return files
 }
 
-function generateEntityClass(entity: Entity) {
-  return `package com.example.model;
+function generateEntityClass(entity: Entity, projectName: string, domain: string) {
+  return `package ${domain}.${projectName}.model;
 
 import javax.persistence.*;
 import lombok.Data;
